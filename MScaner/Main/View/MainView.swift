@@ -9,16 +9,25 @@ import SwiftUI
 
 struct MainView: View {
     @State private var isShowScanView: Bool = false
+    @State private var isShowCategorySheet: Bool = false
     
     
     var body: some View {
         NavigationStack {
             VStack {
-                
+                CategorySelector()
+                Spacer()
             }
             .navigationTitle("MScaner")
             .navigationBarTitleDisplayMode(.automatic)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        isShowCategorySheet = true
+                    } label: {
+                        Image(systemName: "folder.badge.plus")
+                    }
+                }
                 ToolbarItem {
                     Button {
                         isShowScanView = true
@@ -36,6 +45,9 @@ struct MainView: View {
                 }
             }
             .toolbarTitleDisplayMode(.automatic)
+            .sheet(isPresented: $isShowCategorySheet) {
+                CategoryView()
+            }
             .fullScreenCover(isPresented: $isShowScanView) {
                 ScanView(isShowScanView: $isShowScanView)
             }
