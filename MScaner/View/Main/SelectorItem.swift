@@ -39,7 +39,7 @@ struct SelectorItem: View {
                     cornerRadius: 30,
                     style: .continuous
                 )
-                .fill(color.opacity(isSelected ? 1 : 0.2))
+                .fill(color.opacity(isSelected ? 1 : 0.1))
             )
             .overlay {
                 RoundedRectangle(
