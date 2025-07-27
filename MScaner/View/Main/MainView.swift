@@ -10,13 +10,14 @@ import SwiftUI
 struct MainView: View {
     @State private var isShowScanView: Bool = false
     @State private var isShowCategorySheet: Bool = false
+    @State private var searchText: String = ""
     
     
     var body: some View {
         NavigationStack {
-            VStack {
+            ScrollView {
                 CategorySelector()
-                Spacer()
+                ItemListView(searchText: searchText)
             }
             .navigationTitle("MScaner")
             .navigationBarTitleDisplayMode(.automatic)
@@ -45,6 +46,7 @@ struct MainView: View {
                 }
             }
             .toolbarTitleDisplayMode(.automatic)
+            .searchable(text: $searchText, prompt: "Search")
             .sheet(isPresented: $isShowCategorySheet) {
                 CategoryView()
             }
