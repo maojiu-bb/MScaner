@@ -10,7 +10,8 @@ import SwiftData
 
 struct CategorySelector: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \CategoryModel.id, order: .forward) private var categories: [CategoryModel]
+    
+    let categories: [CategoryModel]
     
     var body: some View {
         HStack(spacing: 10) {

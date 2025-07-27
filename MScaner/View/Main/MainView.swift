@@ -6,17 +6,20 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MainView: View {
     @State private var isShowScanView: Bool = false
     @State private var isShowCategorySheet: Bool = false
     @State private var searchText: String = ""
     
+    @Query(sort: \CategoryModel.id, order: .forward) private var categories: [CategoryModel]
+    
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                CategorySelector()
+                CategorySelector(categories: categories)
                 ItemListView(searchText: searchText)
             }
             .navigationTitle("MScaner")
@@ -48,7 +51,7 @@ struct MainView: View {
             .toolbarTitleDisplayMode(.automatic)
             .searchable(text: $searchText, prompt: "Search")
             .sheet(isPresented: $isShowCategorySheet) {
-                CategoryView()
+                CategoryView(categories: categories)
             }
             .fullScreenCover(isPresented: $isShowScanView) {
                 ScanView(isShowScanView: $isShowScanView)
