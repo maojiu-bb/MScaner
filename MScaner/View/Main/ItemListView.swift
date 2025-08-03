@@ -2,7 +2,7 @@
 //  ItemListView.swift
 //  MScaner
 //
-//  Created by 钟钰 on 2025/7/27.
+//  Created by MaoJiu on 2025/7/27.
 //
 
 import SwiftUI

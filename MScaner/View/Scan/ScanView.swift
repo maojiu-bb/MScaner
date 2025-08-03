@@ -2,7 +2,7 @@
 //  ScanView.swift
 //  MScaner
 //
-//  Created by 钟钰 on 2025/7/20.
+//  Created by MaoJiu on 2025/7/20.
 //
 
 import SwiftUI

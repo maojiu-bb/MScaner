@@ -2,7 +2,7 @@
 //  CategoryDataManager.swift
 //  MScaner
 //
-//  Created by 钟钰 on 2025/7/23.
+//  Created by MaoJiu on 2025/7/23.
 //
 
 import Foundation
@@ -22,9 +22,8 @@ class CategoryDataManager {
     ]
     
     private func setupDefaultCategories(in context: ModelContext) {
-        let fetchDescriptor = FetchDescriptor<CategoryModel>()
-        
         do {
+            let fetchDescriptor = FetchDescriptor<CategoryModel>()
             let existCategories = try context.fetch(fetchDescriptor)
             
             if existCategories.isEmpty {
@@ -76,6 +75,76 @@ class CategoryDataManager {
             try context.save()
         } catch {
             print("update selected faild")
+        }
+    }
+    
+    func addCategory(in context: ModelContext, title: String, icon: String, color: Color, onSuccess: @escaping () -> Void) {
+        do {
+            var fetchDescriptor = FetchDescriptor<CategoryModel>(
+                sortBy: [SortDescriptor(\.id, order: .reverse)]
+            )
+                
+            fetchDescriptor.fetchLimit = 1
+            
+            guard let maxId = try context.fetch(fetchDescriptor).first?.id else {
+                return
+            }
+            let nextId = maxId + 1
+            
+            let categoryData = CategoryModel(
+                id: nextId,
+                title: title,
+                icon: icon,
+                color: color,
+                isSelected: false
+            )
+            
+            context.insert(categoryData)
+            
+            try context.save()
+            onSuccess()
+        } catch {
+            print("add category faild")
+        }
+    }
+    
+    func deleteCategory(in context: ModelContext, id: Int) {
+        do {
+            let fetchDescriptor = FetchDescriptor<CategoryModel>(
+                predicate: #Predicate { $0.id == id }
+            )
+            guard let category = try context.fetch(fetchDescriptor).first else {
+                return
+            }
+            
+            context.delete(category)
+            
+            try context.save()
+        } catch {
+            print("delete category faild")
+        }
+    }
+    
+    func updateCategory(in context: ModelContext, updatedCategory: CategoryModel, onSuccess: @escaping () -> Void) {
+        do {
+            let targetId = updatedCategory.id
+            
+            let fetchDescriptor = FetchDescriptor<CategoryModel>(
+                predicate: #Predicate<CategoryModel> { $0.id == targetId }
+            )
+            guard let oldCategory = try context.fetch(fetchDescriptor).first else {
+                return
+            }
+            
+            oldCategory.title = updatedCategory.title
+            oldCategory.icon = updatedCategory.icon
+            oldCategory.color = updatedCategory.color
+            
+            try context.save()
+            
+            onSuccess()
+        } catch {
+            print("update category faild")
         }
     }
 }

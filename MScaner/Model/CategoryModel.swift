@@ -2,7 +2,7 @@
 //  CategoryModel.swift
 //  MScaner
 //
-//  Created by 钟钰 on 2025/7/23.
+//  Created by MaoJiu on 2025/7/23.
 //
 
 import Foundation

@@ -2,7 +2,7 @@
 //  MainCategoryView.swift
 //  MScaner
 //
-//  Created by 钟钰 on 2025/7/20.
+//  Created by MaoJiu on 2025/7/20.
 //
 
 import SwiftUI
@@ -25,7 +25,12 @@ struct CategorySelector: View {
                             icon: category.icon
                         )
                         .onTapGesture {
-                            CategoryDataManager.shared.updateSelected(in: modelContext, selectedCategory: category)
+                            Task {
+                                CategoryDataManager.shared.updateSelected(
+                                    in: modelContext,
+                                    selectedCategory: category
+                                )
+                            }
                         }
                     }
                 }
@@ -34,7 +39,9 @@ struct CategorySelector: View {
         }
         .padding(.horizontal)
         .onAppear {
-            CategoryDataManager.shared.setupDefaultCategoriesOnFirstLaunch(in: modelContext)
+            Task {
+                CategoryDataManager.shared.setupDefaultCategoriesOnFirstLaunch(in: modelContext)
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 //  CategoryView.swift
 //  MScaner
 //
-//  Created by 钟钰 on 2025/7/20.
+//  Created by MaoJiu on 2025/7/20.
 //
 
 import SwiftUI
@@ -40,14 +40,16 @@ struct CategoryView: View {
                                 allowsFullSwipe: false
                             ) {
                                 Button {
-                                    deleteCategory()
+                                    deleteCategory(category.id)
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }
                                 .tint(.red)
                                 
-                                Button {
-                                    editCategory()
+                                NavigationLink {
+                                    CategoryAddView(
+                                        category: category
+                                    )
                                 } label: {
                                     Image(systemName: "pencil.and.outline")
                                 }
@@ -87,19 +89,22 @@ struct CategoryView: View {
         }
     }
     
-    private func deleteCategory() {
-        
-    }
-    
-    private func editCategory() {
-        
+    private func deleteCategory(_ id: Int) {
+        Task {
+            CategoryDataManager.shared.deleteCategory(
+                in: context,
+                id: id
+            )
+        }
     }
     
     private func selectedCategory(_ category: CategoryModel) {
-        CategoryDataManager.shared.updateSelected(
-            in: context,
-            selectedCategory: category
-        )
+        Task {
+            CategoryDataManager.shared.updateSelected(
+                in: context,
+                selectedCategory: category
+            )
+        }
     }
 }
 
